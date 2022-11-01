@@ -9,19 +9,11 @@
     <title>Products</title>
 </head>
 <?php
-$host = "localhost";
-$bd = "ejercicio_ti";
-$usuario = "root";
-$contrasenia = "";
-try {
-    $conexion = new PDO("mysql:host=$host;dbname=$bd", $usuario, $contrasenia);
-} catch (Exception $ex) {
-    echo $ex->getMessage();
-}
 
-$sentenciaSQL = $conexion->prepare("SELECT * FROM products");
-$sentenciaSQL->execute();
-$products = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+use Illuminate\Support\Facades\DB;
+
+$sql = 'SELECT * FROM products';
+$products = json_encode(DB::select($sql), true);
 ?>
 
 <body class="container">
@@ -35,7 +27,7 @@ $products = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($products as $product) { ?>
+            <?php foreach (json_decode($products, true) as $product) { ?>
                 <tr>
                     <td><?php echo $product['id']; ?></td>
                     <td><?php echo $product['name']; ?></td>
